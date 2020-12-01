@@ -1,0 +1,21 @@
+﻿<Window x:Class="GestiuneDepozit.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GestiuneDepozit"
+        mc:Ignorable="d"
+        Title="Gestiune depozit" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" FontSize="14" DataContext="{Binding RelativeSource={RelativeSource Self}}" MinHeight="600" MinWidth="805">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" FontSize="14">
+            <MenuItem Header="Fisier" Padding="6,6,6,6">
+                <MenuItem Name="MenuConfig" Header="Configurare" Click="MenuConfig_Click" Padding="6,6,6,6"/>
+                <MenuItem Name="MenuExit" Header="Inchide aplicatia" Click="MenuExit_Click" Padding="6,6,6,6"/>
+            </MenuItem>
+            <MenuItem Name="MenuListModules" Visibility="{Binding Path=DisplayMenuModuleSelection, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Header="Inapoi la lista cu module" Click="MenuListModules_Click" Background="#FF209B3C" Padding="6,6,6,6" Foreground="White">
+            </MenuItem>
+        </Menu>
+        <DockPanel Name="MainPanel">
+        </DockPanel>
+    </DockPanel>
+</Window>
