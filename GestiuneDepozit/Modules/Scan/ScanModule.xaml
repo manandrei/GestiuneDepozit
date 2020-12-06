@@ -5,21 +5,43 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GestiuneDepozit.Modules.Scan"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded">
+             d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded" FontSize="18">
+    <UserControl.Resources>
+        <Style x:Key="_ListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Name="_Border"
+                                Padding="2"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="_Border" Property="Background" Value="Yellow"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Height="207">
             <Border DockPanel.Dock="Left" x:Name="ScanerImageBackground">
-                <Image Source="/Resources/scaner.png"/>
+                <Image Source="/Resources/scaner.png" Margin="10,10,10,10"/>
             </Border>
-            <Border>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock  x:Name="StatusLbl" Text="Scanati codul de bare" FontSize="36" TextAlignment="Center" TextWrapping="Wrap" LineStackingStrategy="MaxHeight" VerticalAlignment="Center" HorizontalAlignment="Stretch">
                     <TextBlock.Style>
                         <Style/>
                     </TextBlock.Style>
                 </TextBlock>
-            </Border>
+                <Image x:Name="QRImage" Source="/Resources/QR-barcode.png" Margin="20,0,0,0" MaxWidth="100" MaxHeight="100"></Image>
+            </StackPanel>
         </DockPanel>
-        <ListBox x:Name="CategorieLst" DockPanel.Dock="Left" MinWidth="350" FontSize="48" SelectionChanged="CategorieLst_SelectionChanged">
+        <ListBox x:Name="CategorieLst" ItemContainerStyle="{DynamicResource _ListBoxItemStyle}" DockPanel.Dock="Left" MinWidth="350" FontSize="48" SelectionChanged="CategorieLst_SelectionChanged">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -30,9 +52,41 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
             <ListBox.Background>
-                <SolidColorBrush Color="#FF80EEF3" Opacity="0.2"/>
+                <SolidColorBrush Color="#FF7BA9BF"/>
             </ListBox.Background>
         </ListBox>
-        <TextBox x:Name="BarcodeInput" FontSize="36" TextAlignment="Center" AcceptsReturn="False" IsUndoEnabled="False" TextWrapping="Wrap" GotKeyboardFocus="BarcodeInput_GotKeyboardFocus" LostKeyboardFocus="BarcodeInput_LostKeyboardFocus" KeyDown="BarcodeInput_KeyDown"/>
+        <!--<TextBox x:Name="BarcodeInput" FontSize="36" TextAlignment="Center" AcceptsReturn="False" IsUndoEnabled="False" TextWrapping="Wrap" GotKeyboardFocus="BarcodeInput_GotKeyboardFocus" LostKeyboardFocus="BarcodeInput_LostKeyboardFocus" KeyDown="BarcodeInput_KeyDown"/>-->
+        <Grid Margin="10,10,10,10">
+            <TextBox x:Name="BarcodeInput" FontSize="36" TextAlignment="Center" AcceptsReturn="False" IsUndoEnabled="False" TextWrapping="Wrap" GotKeyboardFocus="BarcodeInput_GotKeyboardFocus" LostKeyboardFocus="BarcodeInput_LostKeyboardFocus" KeyDown="BarcodeInput_KeyDown"/>
+            <TextBlock IsHitTestVisible="False" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0" Foreground="DarkGray" TextWrapping="Wrap" TextAlignment="Center" FontSize="36">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>                            
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Visibility, ElementName=QRImage}" Value="Visible" />
+                                    <Condition Binding="{Binding Text, ElementName=BarcodeInput}" Value="" />
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Text" Value="Introduceti 3 sau mai multe caractere pentru a efectua o cautare sau scanati codul de bare al produsului"/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Visibility, ElementName=QRImage}" Value="Hidden" />
+                                    <Condition Binding="{Binding Text, ElementName=BarcodeInput}" Value="" />
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Text" Value="Click aici pentru a putea efectua operatia de scanare sau pentru a putea efectua o cautare"/>
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Grid>
     </DockPanel>
 </UserControl>

@@ -41,6 +41,7 @@ namespace GestiuneDepozit.Modules.Scan
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             StatusLbl.Text = "Scanati codul de bare";
+            QRImage.Visibility = Visibility.Visible;
             BarcodeInput.Focus();
 
             var categorii = Db.Categorii.AsQueryable().Include(i => i.Status).AsNoTracking().ToList();
@@ -52,6 +53,7 @@ namespace GestiuneDepozit.Modules.Scan
             //BarcodeInput.Background = Brushes.GreenYellow;
             ScanerImageBackground.Background = Brushes.GreenYellow;
             StatusLbl.Text = "Scanati codul de bare";
+            QRImage.Visibility = Visibility.Visible;
             BarcodeInput.Focus();
             BarcodeInput.SelectAll();
         }
@@ -61,6 +63,7 @@ namespace GestiuneDepozit.Modules.Scan
             //BarcodeInput.Background = Brushes.Red;
             ScanerImageBackground.Background = Brushes.Red;
             StatusLbl.Text = "Click pe campul de de mai jos pentru a putea efectua operatia de scanare!";
+            QRImage.Visibility = Visibility.Hidden;
         }
 
         private void BarcodeInput_KeyDown(object sender, KeyEventArgs e)
