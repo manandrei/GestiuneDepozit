@@ -36,6 +36,7 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <Label Content="Id" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                     <Label x:Name="IdLbl" Content="" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" FontWeight="Bold"/>
@@ -53,8 +54,10 @@
                     <Label x:Name="AnLbl" Content="" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="6" VerticalAlignment="Top" VerticalContentAlignment="Center" FontWeight="Bold"/>
                     <Label Content="Locatia" HorizontalAlignment="Stretch" Grid.Row="7" VerticalAlignment="Stretch"/>
                     <Label x:Name="LocatiaLbl" Content="" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="7" VerticalAlignment="Top" VerticalContentAlignment="Center" FontWeight="Bold"/>
-                    <Label Content="Status" HorizontalAlignment="Stretch" Grid.Row="8" VerticalAlignment="Stretch"/>
-                    <Label x:Name="StatusLbl" Content="" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="8" VerticalAlignment="Top" VerticalContentAlignment="Center" FontWeight="Bold"/>
+                    <Label Content="Categoria" HorizontalAlignment="Stretch" Grid.Row="8" VerticalAlignment="Stretch"/>
+                    <Label x:Name="CategoriaLbl" Content="" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="8" VerticalAlignment="Top" VerticalContentAlignment="Center" FontWeight="Bold"/>
+                    <Label Content="Status" HorizontalAlignment="Stretch" Grid.Row="9" VerticalAlignment="Stretch"/>
+                    <Label x:Name="StatusLbl" Content="" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="9" VerticalAlignment="Top" VerticalContentAlignment="Center" FontWeight="Bold"/>
                 </Grid>
             </DockPanel>
         </DockPanel>

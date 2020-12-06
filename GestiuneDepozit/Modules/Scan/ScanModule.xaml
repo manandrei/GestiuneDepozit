@@ -10,7 +10,7 @@
         <DockPanel DockPanel.Dock="Top" Height="207">
             <Border DockPanel.Dock="Left" x:Name="ScanerImageBackground">
                 <Image Source="/Resources/scaner.png"/>
-            </Border>            
+            </Border>
             <Border>
                 <TextBlock  x:Name="StatusLbl" Text="Scanati codul de bare" FontSize="36" TextAlignment="Center" TextWrapping="Wrap" LineStackingStrategy="MaxHeight" VerticalAlignment="Center" HorizontalAlignment="Stretch">
                     <TextBlock.Style>
@@ -19,7 +19,20 @@
                 </TextBlock>
             </Border>
         </DockPanel>
-              
-        <TextBox x:Name="BarcodeInput" HorizontalAlignment="Stretch" FontSize="36" TextAlignment="Center" AcceptsReturn="False" IsUndoEnabled="False" TextWrapping="Wrap" GotKeyboardFocus="BarcodeInput_GotKeyboardFocus" LostKeyboardFocus="BarcodeInput_LostKeyboardFocus" KeyDown="BarcodeInput_KeyDown"/>
+        <ListBox x:Name="CategorieLst" DockPanel.Dock="Left" MinWidth="350" FontSize="48" SelectionChanged="CategorieLst_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding NumeCategorie}"/>
+                        <TextBlock Text=" - "/>
+                        <TextBlock Text="{Binding Status.NumeStatus}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.Background>
+                <SolidColorBrush Color="#FF80EEF3" Opacity="0.2"/>
+            </ListBox.Background>
+        </ListBox>
+        <TextBox x:Name="BarcodeInput" FontSize="36" TextAlignment="Center" AcceptsReturn="False" IsUndoEnabled="False" TextWrapping="Wrap" GotKeyboardFocus="BarcodeInput_GotKeyboardFocus" LostKeyboardFocus="BarcodeInput_LostKeyboardFocus" KeyDown="BarcodeInput_KeyDown"/>
     </DockPanel>
 </UserControl>

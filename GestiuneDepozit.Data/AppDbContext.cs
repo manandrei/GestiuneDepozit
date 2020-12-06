@@ -5,7 +5,7 @@ namespace GestiuneDepozit.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(): base()
+        public AppDbContext() : base()
         {
             //this.Database.Migrate();
         }
@@ -14,17 +14,16 @@ namespace GestiuneDepozit.Data
         {
             optionsBuilder.UseSqlServer(Configuration.MSSQL_ConnectionString());
             optionsBuilder.EnableSensitiveDataLogging();
-            
-            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<StatusProdus>().HasData(new StatusProdus { Id = 1, Status = "bune" });
+            modelBuilder.Entity<Status>().HasData(new Status { Id = 1, NumeStatus = "bune" });
         }
 
         public DbSet<Locatie> Locatii { get; set; }
-        public DbSet<StatusProdus> StatusProdus { get; set; }
+        public DbSet<Status> Status { get; set; }
         public DbSet<Produs> Produse { get; set; }
+        public DbSet<Categorie> Categorii { get; set; }
     }
 }

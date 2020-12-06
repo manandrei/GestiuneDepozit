@@ -16,7 +16,7 @@ namespace GestiuneDepozit.Services
 
         public Produs ProdusScanat { get => InterpretBarcode(); }
 
-        public StatusProdus Status { get; set; }
+        public Categorie Categorie { get; set; }
 
         private bool BarcodeValidation()
         {
