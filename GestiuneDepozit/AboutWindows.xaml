@@ -1,0 +1,102 @@
+﻿<Window x:Class="GestiuneDepozit.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GestiuneDepozit"
+        mc:Ignorable="d"
+        Title="Despre aplicatie" Height="583" Width="833" FontSize="18" WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+    <Grid>
+        <RichTextBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0">
+            <RichTextBox.Resources>
+                <Style TargetType="Hyperlink">
+                    <Setter Property="Cursor" Value="Hand" />
+                    <EventSetter Event="RequestNavigate" Handler="Hyperlink_RequestNavigate" />
+                </Style>
+            </RichTextBox.Resources>
+            <FlowDocument>
+                <Paragraph FontWeight="Bold" FontSize="22" Padding="0,0,0,0">GestiuneDepozit</Paragraph>
+                <Paragraph>Aplicatie dezvoltata de:
+                    <Bold>Man Andrei Catalin</Bold>
+                    <LineBreak/>
+                    Email:
+                    <Hyperlink NavigateUri="mailto:man.andrei.catalin@outlook.com" FontWeight="Bold" Foreground="#FF006FBB">man.andrei.catalin@outlook.com</Hyperlink>
+                    <LineBreak/>
+                    Telefon:
+                    <Hyperlink NavigateUri="tel:+4 0750 456 773" FontWeight="Bold" Foreground="#FF006FBB">+4 0750 456 773</Hyperlink>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <Border Margin="10,160,422,54" BorderThickness="3" Padding="5">
+            <Border.BorderBrush>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF0B418F"/>
+                    <GradientStop Color="#FF2AAADA" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            <DockPanel>
+                <Label DockPanel.Dock="Top" HorizontalAlignment="Left" VerticalAlignment="Top">Software distribuit sub licenta:</Label>
+                <ScrollViewer >
+                    <TextBlock TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="True" FontSize="14">
+            GestiuneDepozit <LineBreak/>Copyright (c) 2020 Man Andrei Catalin<LineBreak/><LineBreak/><LineBreak/>*** END USER LICENSE AGREEMENT ***  <LineBreak/><LineBreak/><LineBreak/><LineBreak/>IMPORTANT: PLEASE READ THIS LICENSE CAREFULLY BEFORE USING THIS SOFTWARE.<LineBreak/><LineBreak/><LineBreak/>1. LICENSE<LineBreak/><LineBreak/><LineBreak/>By receiving, opening the file package, and/or using GestiuneDepozit ("Software") containing this software, you agree that this End User User License Agreement(EULA) is a legally binding and valid contract and agree to be bound by it. You agree to abide by the intellectual property laws and all of the terms and conditions of this Agreement.<LineBreak/><LineBreak/><LineBreak/><LineBreak/>Unless you have a different license agreement signed by Man Andrei Catalin your use of GestiuneDepozit  indicates your acceptance of this license agreement and warranty.<LineBreak/><LineBreak/><LineBreak/><LineBreak/>Subject to the terms of this Agreement, Man Andrei Catalin grants to you a limited, non-exclusive, non-transferable license, without right to sub-license, to use GestiuneDepozit  in accordance with this Agreement and any other written agreement with Man Andrei Catalin. Man Andrei Catalin does not transfer the title of GestiuneDepozit  to you; the license granted to you is not a sale. This agreement is a binding legal agreement between Man Andrei Catalin and the purchasers or users of GestiuneDepozit .<LineBreak/><LineBreak/><LineBreak/><LineBreak/>If you do not agree to be bound by this agreement, remove GestiuneDepozit  from your computer now and, if applicable, promptly return to Man Andrei Catalin by mail any copies of GestiuneDepozit  and related documentation and packaging in your possession. <LineBreak/><LineBreak/>	<LineBreak/>2. DISTRIBUTION<LineBreak/><LineBreak/><LineBreak/>GestiuneDepozit  and the license herein granted shall not be copied, shared, distributed, re-sold, offered for re-sale, transferred or sub-licensed in whole or in part except that you may make one copy for archive purposes only. For information about redistribution of GestiuneDepozit  contact Man Andrei Catalin.<LineBreak/><LineBreak/>	<LineBreak/>3. USER AGREEMENT<LineBreak/><LineBreak/>3.1 Use<LineBreak/><LineBreak/><LineBreak/>Your license to use GestiuneDepozit  is limited to the number of licenses purchased by you. You shall not allow others to use, copy or evaluate copies of GestiuneDepozit .<LineBreak/><LineBreak/><LineBreak/>3.2 Use Restrictions<LineBreak/><LineBreak/><LineBreak/>You shall use GestiuneDepozit  in compliance with all applicable laws and not for any unlawful purpose. Without limiting the foregoing, use, display or distribution of GestiuneDepozit  together with material that is pornographic, racist, vulgar, obscene, defamatory, libelous, abusive, promoting hatred, discriminating or displaying prejudice based on religion, ethnic heritage, race, sexual orientation or age is strictly prohibited.<LineBreak/><LineBreak/><LineBreak/><LineBreak/>Each licensed copy of GestiuneDepozit  may be used on one single computer location by one user. Use of GestiuneDepozit  means that you have loaded, installed, or run GestiuneDepozit  on a computer or similar device. If you install GestiuneDepozit  onto a multi-user platform, server or network, each and every individual user of GestiuneDepozit  must be licensed separately.<LineBreak/><LineBreak/><LineBreak/><LineBreak/>You may make one copy of GestiuneDepozit  for backup purposes, providing you only have one copy installed on one computer being used by one person. Other users may not use your copy of GestiuneDepozit  . The assignment, sublicense, networking, sale, or distribution of copies of GestiuneDepozit  are strictly forbidden without the prior written consent of Man Andrei Catalin. It is a violation of this agreement to assign, sell, share, loan, rent, lease, borrow, network or transfer the use of GestiuneDepozit . If any person other than yourself uses GestiuneDepozit  registered in your name, regardless of whether it is at the same time or different times, then this agreement is being violated and you are responsible for that violation!  <LineBreak/><LineBreak/><LineBreak/>3.3 Copyright Restriction<LineBreak/><LineBreak/><LineBreak/>This Software contains copyrighted material, trade secrets and other proprietary material. You shall not, and shall not attempt to, modify, reverse engineer, disassemble or decompile GestiuneDepozit . Nor can you create any derivative works or other works that are based upon or derived from GestiuneDepozit  in whole or in part.<LineBreak/><LineBreak/>	<LineBreak/><LineBreak/>Man Andrei Catalin's name, logo and graphics file that represents GestiuneDepozit  shall not be used in any way to promote products developed with GestiuneDepozit  . Man Andrei Catalin retains sole and exclusive ownership of all right, title and interest in and to GestiuneDepozit  and all Intellectual Property rights relating thereto.<LineBreak/><LineBreak/><LineBreak/><LineBreak/>Copyright law and international copyright treaty provisions protect all parts of GestiuneDepozit , products and services. No program, code, part, image, audio sample, or text may be copied or used in any way by the user except as intended within the bounds of the single user program. All rights not expressly granted hereunder are reserved for Man Andrei Catalin. <LineBreak/><LineBreak/><LineBreak/>3.4 Limitation of Responsibility<LineBreak/><LineBreak/><LineBreak/>You will indemnify, hold harmless, and defend Man Andrei Catalin , its employees, agents and distributors against any and all claims, proceedings, demand and costs resulting from or in any way connected with your use of Man Andrei Catalin's Software.<LineBreak/><LineBreak/><LineBreak/><LineBreak/>In no event (including, without limitation, in the event of negligence) will Man Andrei Catalin , its employees, agents or distributors be liable for any consequential, incidental, indirect, special or punitive damages whatsoever (including, without limitation, damages for loss of profits, loss of use, business interruption, loss of information or data, or pecuniary loss), in connection with or arising out of or related to this Agreement, GestiuneDepozit  or the use or inability to use GestiuneDepozit  or the furnishing, performance or use of any other matters hereunder whether based upon contract, tort or any other theory including negligence.<LineBreak/><LineBreak/><LineBreak/> <LineBreak/>Man Andrei Catalin's entire liability, without exception, is limited to the customers' reimbursement of the purchase price of the Software (maximum being the lesser of the amount paid by you and the suggested retail price as listed by Man Andrei Catalin ) in exchange for the return of the product, all copies, registration papers and manuals, and all materials that constitute a transfer of license from the customer back to Man Andrei Catalin.<LineBreak/><LineBreak/>	<LineBreak/>3.5 Warranties<LineBreak/><LineBreak/><LineBreak/>Except as expressly stated in writing, Man Andrei Catalin makes no representation or warranties in respect of this Software and expressly excludes all other warranties, expressed or implied, oral or written, including, without limitation, any implied warranties of merchantable quality or fitness for a particular purpose.<LineBreak/><LineBreak/><LineBreak/>3.6 Governing Law<LineBreak/><LineBreak/><LineBreak/>This Agreement shall be governed by the law of the RO applicable therein. You hereby irrevocably attorn and submit to the non-exclusive jurisdiction of the courts of RO therefrom. If any provision shall be considered unlawful, void or otherwise unenforceable, then that provision shall be deemed severable from this License and not affect the validity and enforceability of any other provisions.<LineBreak/><LineBreak/><LineBreak/>3.7 Termination<LineBreak/><LineBreak/><LineBreak/>Any failure to comply with the terms and conditions of this Agreement will result in automatic and immediate termination of this license. Upon termination of this license granted herein for any reason, you agree to immediately cease use of GestiuneDepozit  and destroy all copies of GestiuneDepozit  supplied under this Agreement. The financial obligations incurred by you shall survive the expiration or termination of this license.  <LineBreak/><LineBreak/><LineBreak/>4. DISCLAIMER OF WARRANTY<LineBreak/><LineBreak/><LineBreak/>THIS SOFTWARE AND THE ACCOMPANYING FILES ARE SOLD "AS IS" AND WITHOUT WARRANTIES AS TO PERFORMANCE OR MERCHANTABILITY OR ANY OTHER WARRANTIES WHETHER EXPRESSED OR IMPLIED. THIS DISCLAIMER CONCERNS ALL FILES GENERATED AND EDITED BY GestiuneDepozit  AS WELL.<LineBreak/><LineBreak/><LineBreak/>5. CONSENT OF USE OF DATA<LineBreak/><LineBreak/><LineBreak/>You agree that Man Andrei Catalin may collect and use information gathered in any manner as part of the product support services provided to you, if any, related to GestiuneDepozit .Man Andrei Catalin may also use this information to provide notices to you which may be of use or interest to you.
+                    </TextBlock>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+        <Border BorderThickness="3" Padding="5" Margin="0,160,10,54" HorizontalAlignment="Right" Width="407">
+            <Border.BorderBrush>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF0B418F"/>
+                    <GradientStop Color="#FF2AAADA" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            <ScrollViewer>
+                <RichTextBox FontSize="14" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" IsReadOnly="True" IsDocumentEnabled="True">
+                    <RichTextBox.Resources>
+                        <Style TargetType="Hyperlink">
+                            <Setter Property="Cursor" Value="Hand" />
+                            <EventSetter Event="RequestNavigate" Handler="Hyperlink_RequestNavigate" />
+                        </Style>
+                    </RichTextBox.Resources>
+                    <FlowDocument>
+                        <Section>
+                            <Paragraph>
+                                Acest software foloseste librarii terte care sunt distribuite sub licente diferite:
+                                <LineBreak/>
+                                <Bold>ClosedXML</Bold> :
+                                <Hyperlink NavigateUri="https://github.com/ClosedXML/ClosedXML/blob/develop/LICENSE">MIT License</Hyperlink>
+                                <LineBreak/>
+                                <Bold>Microsoft.EntityFrameworkCore</Bold> :
+                                <Hyperlink NavigateUri="https://licenses.nuget.org/Apache-2.0">Apache-2.0 License</Hyperlink>
+                                <LineBreak/>
+                                <Bold>Microsoft.EntityFrameworkCore.Design</Bold> :
+                                <Hyperlink NavigateUri="https://licenses.nuget.org/Apache-2.0">Apache-2.0 License</Hyperlink>
+                                <LineBreak/>
+                                <Bold>Microsoft.EntityFrameworkCore.Relational</Bold> :
+                                <Hyperlink NavigateUri="https://licenses.nuget.org/Apache-2.0">Apache-2.0 License</Hyperlink>
+                                <LineBreak/>
+                                <Bold>Microsoft.EntityFrameworkCore.SqlServer</Bold> :
+                                <Hyperlink NavigateUri="https://licenses.nuget.org/Apache-2.0">Apache-2.0 License</Hyperlink>
+                                <LineBreak/>
+                                <Bold>Microsoft.EntityFrameworkCore.Tools</Bold> :
+                                <Hyperlink NavigateUri="https://licenses.nuget.org/Apache-2.0">Apache-2.0 License</Hyperlink>
+                                <LineBreak/>
+                                <Bold>Microsoft.Extensions.DependencyInjection</Bold> :
+                                <Hyperlink NavigateUri="https://github.com/dotnet/runtime/blob/master/LICENSE.TXT">MIT License</Hyperlink>
+                                <LineBreak/>
+                                <Bold>System.Text.Json</Bold> :
+                                <Hyperlink NavigateUri="https://github.com/dotnet/runtime/blob/master/LICENSE.TXT">MIT License</Hyperlink>
+                                <LineBreak/>
+                                <Bold>.NET 5</Bold> :
+                                <Hyperlink NavigateUri="https://github.com/dotnet/runtime/blob/master/LICENSE.TXT">MIT License</Hyperlink>
+                            </Paragraph>
+                        </Section>
+                    </FlowDocument>
+                </RichTextBox>
+            </ScrollViewer>
+        </Border>
+
+
+        <Button x:Name="OKBtn" Click="OKBtn_Click" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="5,5,5,5" Margin="5,5,5,5">OK</Button>
+    </Grid>
+</Window>

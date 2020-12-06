@@ -46,6 +46,7 @@ namespace GestiuneDepozit
         {
             services.AddDbContext<AppDbContext>();
             services.AddSingleton<MainWindow>();
+            services.AddTransient<AboutWindow>();
             services.AddTransient<ConfigModule>();
             services.AddTransient<ModulesList>();
             services.AddTransient<GestionarModule>();
