@@ -4,8 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GestiuneDepozit.Modules.Gestionar"
+             xmlns:b="clr-namespace:GestiuneDepozit.Data.Models;assembly=GestiuneDepozit.Data"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" FontSize="14">
+             d:DesignHeight="450" d:DesignWidth="800" FontSize="14"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             >
     <Grid>
         <TabControl Name="TabControlGestiune" SelectionChanged="TabControlGestiune_SelectionChanged">
             <TabItem Header="Rapoarte">
@@ -44,7 +47,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
-                    </DataGrid>                    
+                    </DataGrid>
                 </Grid>
             </TabItem>
             <TabItem Header="Status produse">
@@ -60,6 +63,30 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button PreviewMouseLeftButtonUp="StatusGrid_Buton_Click" Tag="{Binding}">Sterge</Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Categorie">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel Height="54" VerticalAlignment="Top" Orientation="Horizontal" Margin="0,5,0,5">
+                        <Label Content="Status" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <ComboBox x:Name="StatusCbx" MinWidth="150" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,5,0" MinHeight="25" Padding="5,5,5,5">
+                            
+                        </ComboBox>
+                        <Label Content="Categorie" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBox x:Name="CategorieTxt" TextWrapping="Wrap" MinWidth="120" VerticalAlignment="Center" Margin="0,0,5,0" Width="215" Padding="5,5,5,5"/>
+                        <Button x:Name="AdaugaCategorieBtn" Content="Adauga categorie" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5,5,5,5" Click="AdaugaCategorieBtn_Click"/>
+                    </StackPanel>
+                    <DataGrid x:Name="CategorieGrid" Margin="0,59,0,0" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" SelectionMode="Single">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Actiune">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button PreviewMouseLeftButtonUp="CategorieGrid_Buton_Click" Tag="{Binding}">Sterge</Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

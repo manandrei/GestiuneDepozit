@@ -54,7 +54,8 @@ namespace GestiuneDepozit.Modules.Scan
 
                     var DbRecord = Db.Produse
                         .Include(i => i.Locatie)
-                        .Include(i => i.Status)
+                        .Include(i => i.Categorie)
+                        .ThenInclude(c => c.Status)
                         .Where(w =>
                             w.CodProdus == ScanHandler.ProdusScanat.CodProdus &&
                             w.Serie == ScanHandler.ProdusScanat.Serie &&
@@ -77,10 +78,11 @@ namespace GestiuneDepozit.Modules.Scan
                             MessageBox.Show("Eroare la salvarea datelor in baza de date!" + Environment.NewLine + ex.Message, "Eroare", MessageBoxButton.OK, MessageBoxImage.Stop);
                             return;
                         }
-                        
+
                         IdLbl.Content = DbRecord.Id.ToString();
                         LocatiaLbl.Content = DbRecord.Locatie.NumeLocatie;
-                        StatusLbl.Content = DbRecord.Status.Status;
+                        CategoriaLbl.Content = DbRecord.Categorie.NumeCategorie;
+                        StatusLbl.Content = DbRecord.Categorie.Status.NumeStatus;
                     }
                     else
                     {
@@ -106,7 +108,7 @@ namespace GestiuneDepozit.Modules.Scan
                             .Where(w => w.Produse.Count > 0 && w.Produse.Count < w.CapacitateProduse)
                             .FirstOrDefault();
 
-                        record.Status = ScanHandler.Status;
+                        record.Categorie = ScanHandler.Categorie;
 
                         if (locatieProdusExistent != null)
                         {
@@ -151,7 +153,7 @@ namespace GestiuneDepozit.Modules.Scan
                             }
                         }
 
-                        Db.Entry(record.Status).State = EntityState.Unchanged;
+                        Db.Entry(record.Categorie).State = EntityState.Unchanged;
 
                         Db.Produse.Add(record);
                         try
@@ -166,7 +168,8 @@ namespace GestiuneDepozit.Modules.Scan
 
                         IdLbl.Content = record.Id.ToString();
                         LocatiaLbl.Content = record.Locatie.NumeLocatie;
-                        StatusLbl.Content = record.Status.Status;
+                        CategoriaLbl.Content = record.Categorie?.NumeCategorie;
+                        StatusLbl.Content = record.Categorie.Status.NumeStatus;
 
                     }
                 }

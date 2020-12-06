@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -41,6 +42,8 @@ namespace GestiuneDepozit.Modules.Gestionar
 
             InitializeComponent();
 
+            DataContext = this;
+            AfiseazaStatus();
         }
 
         private void BtnExportExcel_Click(object sender, RoutedEventArgs e)
@@ -56,7 +59,8 @@ namespace GestiuneDepozit.Modules.Gestionar
                     var worksheet = workbook.Worksheets.Add($"Stoc {DateTime.Now.Date.ToString("dd.MM.yyyy")}");
                     var stoc = Db.Produse
                         .Include(i => i.Locatie)
-                        .Include(i => i.Status)
+                        .Include(i => i.Categorie)
+                        .ThenInclude(c => c.Status)
                         .Select(x => new
                         {
                             Produs = x.CodProdus,
@@ -64,7 +68,8 @@ namespace GestiuneDepozit.Modules.Gestionar
                             Saptamana = x.Saptamana,
                             An = x.An,
                             Locatia = x.Locatie.NumeLocatie,
-                            Status = x.Status.Status
+                            Categoria = x.Categorie.NumeCategorie,
+                            Status = x.Categorie.Status.NumeStatus
                         })
                         .ToList();
 
@@ -73,7 +78,8 @@ namespace GestiuneDepozit.Modules.Gestionar
                     worksheet.Cell(1, 3).Value = "Saptamana";
                     worksheet.Cell(1, 4).Value = "An";
                     worksheet.Cell(1, 5).Value = "Locatia";
-                    worksheet.Cell(1, 6).Value = "Status";
+                    worksheet.Cell(1, 6).Value = "Categoria";
+                    worksheet.Cell(1, 7).Value = "Status";
 
                     worksheet.Cell(2, 1).Value = stoc.AsEnumerable();
 
@@ -91,7 +97,7 @@ namespace GestiuneDepozit.Modules.Gestionar
 
         private void SearchBtn_Click(object sender, RoutedEventArgs e)
         {
-            var rez = Db.Produse.Include(i => i.Locatie).Include(i => i.Status).Where(w => w.CodProdus.Contains(SearchTxt.Text)).Select(x => new
+            var rez = Db.Produse.Include(i => i.Locatie).Include(i => i.Categorie).ThenInclude(c => c.Status).Where(w => w.CodProdus.Contains(SearchTxt.Text)).Select(x => new
             {
                 Id = x.Id,
                 x.InregistratDe,
@@ -101,7 +107,7 @@ namespace GestiuneDepozit.Modules.Gestionar
                 x.Saptamana,
                 x.An,
                 Locatia = x.Locatie.NumeLocatie,
-                Status = x.Status.Status
+                Status = x.Categorie.Status.NumeStatus
             }).ToList();
             ResultGrid.ItemsSource = null;
             ResultGrid.ItemsSource = rez;
@@ -170,14 +176,17 @@ namespace GestiuneDepozit.Modules.Gestionar
             var locatii = Db.Locatii
                 .Include(i => i.Produse)
                 .OrderBy(o => o.NumeLocatie)
-                .Select(s => new LocatieCuStatusCapacitate
-                {
-                    Id = s.Id,
-                    NumeLocatie = s.NumeLocatie,
-                    CapacitateProduse = s.CapacitateProduse,
-                    ProduseAlocate = s.Produse.Count
-                }
-                ).ToList();
+                .Select(
+                    s => new LocatieCuStatusCapacitate
+                    {
+                        Id = s.Id,
+                        NumeLocatie = s.NumeLocatie,
+                        CapacitateProduse = s.CapacitateProduse,
+                        ProduseAlocate = s.Produse.Count
+                    }
+                )
+                .AsNoTracking()
+                .ToList();
 
             LocatiiGrid.ItemsSource = null;
             LocatiiGrid.ItemsSource = locatii;
@@ -192,6 +201,9 @@ namespace GestiuneDepozit.Modules.Gestionar
                     break;
                 case 3:
                     AfiseazaStatus();
+                    break;
+                case 4:
+                    AfiseazaCategorie();
                     break;
                 default:
                     break;
@@ -231,16 +243,37 @@ namespace GestiuneDepozit.Modules.Gestionar
             }
         }
 
-        private async void AfiseazaStatus()
+        private void AfiseazaStatus()
         {
-            var status = await Db.StatusProdus
-                .OrderBy(o => o.Status)
-                .ToListAsync();
+            var status = Db.Status.AsQueryable()
+                .OrderBy(o => o.NumeStatus)
+                .AsNoTracking()
+                .ToList();
             StatusGrid.ItemsSource = null;
             StatusGrid.ItemsSource = status;
+
+            StatusCbx.Items.Clear();
+            foreach (var item in status)
+            {
+                StatusCbx.Items.Add(item);
+            }
+            StatusCbx.DisplayMemberPath = "NumeStatus";
+            StatusCbx.SelectedValuePath = "NumeStatus";
         }
 
-        private async void AdaugaStatusBtn_Click(object sender, RoutedEventArgs e)
+        private void AfiseazaCategorie()
+        {
+            var categorii = Db.Categorii
+                .AsQueryable()
+                .Include(i=> i.Status)
+                .OrderBy(o => o.NumeCategorie)
+                .AsNoTracking()
+                .ToList();
+            CategorieGrid.ItemsSource = null;
+            CategorieGrid.ItemsSource = categorii;
+        }
+
+        private void AdaugaStatusBtn_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(StatusTxt.Text))
             {
@@ -248,15 +281,15 @@ namespace GestiuneDepozit.Modules.Gestionar
             }
             else
             {
-                var status = await Db.StatusProdus.Where(w => w.Status == StatusTxt.Text).FirstOrDefaultAsync();
+                var status = Db.Status.Where(w => w.NumeStatus == StatusTxt.Text).FirstOrDefault();
                 if (status == null)
                 {
-                    var statusNou = new StatusProdus
+                    var statusNou = new Status
                     {
-                        Status = StatusTxt.Text
+                        NumeStatus = StatusTxt.Text
                     };
-                    Db.StatusProdus.Add(statusNou);
-                    await Db.SaveChangesAsync();
+                    Db.Status.Add(statusNou);
+                    Db.SaveChanges();
                     AfiseazaStatus();
                     StatusTxt.Clear();
                 }
@@ -269,11 +302,11 @@ namespace GestiuneDepozit.Modules.Gestionar
 
         private void StatusGrid_Buton_Click(object sender, MouseButtonEventArgs e)
         {
-            var statusGrid = ((Button)sender).Tag as StatusProdus;
-            var status = Db.StatusProdus.Where(w => w.Id == statusGrid.Id).FirstOrDefault();
+            var statusGrid = ((Button)sender).Tag as Status;
+            var status = Db.Status.Where(w => w.Id == statusGrid.Id).FirstOrDefault();
             if (status != null)
             {
-                var numarProduseStatus = Db.Produse.Where(w => w.Status.Id == status.Id).Count();
+                var numarProduseStatus = Db.Produse.Where(w => w.Categorie.Status.Id == status.Id).Count();
                 if (numarProduseStatus > 0)
                 {
                     MessageBox.Show($"Statusul nu poate fi sters deoarece exista {numarProduseStatus} produse alocate cu acest status!", "", MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -282,9 +315,9 @@ namespace GestiuneDepozit.Modules.Gestionar
                 }
                 else
                 {
-                    if (MessageBox.Show($"Stergeti statusul cu numele {status.Status} si Id {status.Id}?", "Confirmare", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    if (MessageBox.Show($"Stergeti statusul cu numele {status.NumeStatus} si Id {status.Id}?", "Confirmare", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
-                        Db.StatusProdus.Remove(status);
+                        Db.Status.Remove(status);
                         try
                         {
                             Db.SaveChanges();
@@ -298,6 +331,96 @@ namespace GestiuneDepozit.Modules.Gestionar
                     }
                 }
             }
+        }
+
+        private void AdaugaCategorieBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(CategorieTxt.Text) || StatusCbx.SelectedItem == null || StatusCbx.SelectedItem is not Status)
+            {
+                MessageBox.Show("Verificati daca campurile sunt completate corespunzator!");
+            }
+            else
+            {
+                var selectedStatus = StatusCbx.SelectedItem as Status;
+                var status = Db.Status.AsQueryable().Where(w => w.NumeStatus == selectedStatus.NumeStatus && w.Id == selectedStatus.Id).AsNoTracking().FirstOrDefault();
+                if (status != null)
+                {
+                    var categorie = Db.Categorii.Include(i=>i.Status).Where(w => w.NumeCategorie == CategorieTxt.Text).FirstOrDefault();
+                    if (categorie == null)
+                    {
+                        var categorieNoua = new Categorie
+                        {
+                            NumeCategorie = CategorieTxt.Text,
+                            Status = status
+                        };
+
+                        Db.Entry(categorieNoua.Status).State = EntityState.Unchanged;
+
+                        Db.Categorii.Add(categorieNoua);
+                        Db.SaveChanges();
+                        AfiseazaCategorie();
+                        CategorieTxt.Clear();
+                    }
+                    else if (categorie.Status != status)
+                    {
+                        categorie.Status = status;
+
+                        Db.Entry(categorie.Status).State = EntityState.Unchanged;
+
+                        Db.Categorii.Update(categorie);
+                        Db.SaveChanges();
+                        AfiseazaCategorie();
+                        CategorieTxt.Clear();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Categoria este definita deja in sistem!", "", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
+                }                
+            }
+        }
+
+        private void CategorieGrid_Buton_Click(object sender, MouseButtonEventArgs e)
+        {
+            var categorieGrid = ((Button)sender).Tag as Categorie;
+            var categorie = Db.Categorii.Where(w => w.Id == categorieGrid.Id).FirstOrDefault();
+            if (categorie != null)
+            {
+                var numarProduseStatus = Db.Produse.Where(w => w.Categorie.Id == categorie.Id).Count();
+                if (numarProduseStatus > 0)
+                {
+                    MessageBox.Show($"Categoria nu poate fi stearsa deoarece exista {numarProduseStatus} produse alocate cu acest status!", "", MessageBoxButton.OK, MessageBoxImage.Stop);
+
+                    //ToDo: intreaba daca sa stearga si toate produsele
+                }
+                else
+                {
+                    if (MessageBox.Show($"Stergeti categoria cu numele {categorie.NumeCategorie} si Id {categorie.Id}?", "Confirmare", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                        Db.Categorii.Remove(categorie);
+                        try
+                        {
+                            Db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Eroare la salvarea datelor in baza de date!" + Environment.NewLine + ex.Message, "Eroare", MessageBoxButton.OK, MessageBoxImage.Stop);
+                            return;
+                        }
+                        AfiseazaCategorie();
+                    }
+                }
+            }
+        }
+
+        private void StatusCbx_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // ... Get the ComboBox.
+            var comboBox = sender as ComboBox;
+
+            // ... Set SelectedItem as Window Title.
+            var value = comboBox?.SelectedItem as Status;
+            //MessageBox.Show(value?.NumeStatus);
         }
     }
 }

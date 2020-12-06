@@ -43,7 +43,7 @@ namespace GestiuneDepozit.Modules.Scan
 
             if (!string.IsNullOrEmpty(ProductCodePartial))
             {
-                var produse = Db.Produse.Include(i => i.Locatie).Include(i => i.Status).Where(w => w.CodProdus.EndsWith(ProductCodePartial)).OrderBy(o => o.DataInregistrare).Select(s => new
+                var produse = Db.Produse.Include(i => i.Locatie).Include(i => i.Categorie).ThenInclude(c=>c.Status).Where(w => w.CodProdus.EndsWith(ProductCodePartial)).OrderBy(o => o.DataInregistrare).Select(s => new
                 {
                     s.Id,
                     s.DataInregistrare,
@@ -53,7 +53,7 @@ namespace GestiuneDepozit.Modules.Scan
                     s.Saptamana,
                     s.An,
                     s.Locatie.NumeLocatie,
-                    s.Status.Status
+                    s.Categorie.Status.NumeStatus
                 }).ToList();
 
                 RezultatGrid.ItemsSource = produse;

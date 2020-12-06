@@ -5,10 +5,10 @@ using System.Text;
 
 namespace GestiuneDepozit.Data.Models
 {
-    [Index(nameof(Status), IsUnique = true)]
-    public class StatusProdus
+    [Index(nameof(NumeStatus), IsUnique = true)]
+    public class Status
     {
         public int Id { get; set; }
-        public string Status { get; set; }
+        public string NumeStatus { get; set; }
     }
 }

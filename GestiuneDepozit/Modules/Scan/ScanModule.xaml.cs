@@ -1,4 +1,6 @@
-﻿using GestiuneDepozit.Data.Models;
+﻿using GestiuneDepozit.Data;
+using GestiuneDepozit.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -26,11 +28,13 @@ namespace GestiuneDepozit.Modules.Scan
         private readonly IServiceProvider ServiceProvider;
         public IServiceScope ServiceScope { get; set; }
 
-        public ScanModule(IServiceProvider serviceProvider)
+        private readonly AppDbContext Db;
+
+        public ScanModule(IServiceProvider serviceProvider, AppDbContext db)
         {
             ServiceProvider = serviceProvider;
             ServiceScope = ServiceProvider.CreateScope();
-
+            Db = db;
             InitializeComponent();
         }
 
@@ -38,6 +42,9 @@ namespace GestiuneDepozit.Modules.Scan
         {
             StatusLbl.Text = "Scanati codul de bare";
             BarcodeInput.Focus();
+
+            var categorii = Db.Categorii.AsQueryable().Include(i => i.Status).AsNoTracking().ToList();
+            CategorieLst.ItemsSource = categorii;
         }
 
         private void BarcodeInput_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -70,22 +77,41 @@ namespace GestiuneDepozit.Modules.Scan
                     ScanHandler.ScannedValue = BarcodeInput.Text.Trim();
                     if (ScanHandler.IsBarcodeValid)
                     {
-                        //Todo: Afiseaza fereastra pentru a selecta un status al produsului si modifica mai jos
-                        StatusProdus status = null; //Db.StatusProdus.Where(w => w.Status == "testare").FirstOrDefault();
-                        if (status == null)
+                        //ToDo: Check if selectedItem is not null
+                        if (CategorieLst.SelectedItem != null && CategorieLst.SelectedItem is Categorie)
                         {
-                            status = new StatusProdus { Id = 1, Status = "bune" };
+                            var categorieSelectata = CategorieLst.SelectedItem as Categorie;
+                            ScanHandler.Categorie = categorieSelectata;
+
+
+                            var gestiuneProdus = ServiceScope.ServiceProvider.GetService<GestiuneProdus>();
+                            if (gestiuneProdus != null)
+                            {
+                                gestiuneProdus.ScanHandler = ScanHandler;
+                                var mainWindow = ServiceScope.ServiceProvider.GetService<MainWindow>();
+                                mainWindow.MainPanel.Children.Add(gestiuneProdus);
+                                mainWindow.MainPanel.Children.Remove(this);
+                            }
                         }
-                        ScanHandler.Status = status;
-
-
-                        var gestiuneProdus = ServiceScope.ServiceProvider.GetService<GestiuneProdus>();
-                        if (gestiuneProdus != null)
+                        else
                         {
-                            gestiuneProdus.ScanHandler = ScanHandler;
-                            var mainWindow = ServiceScope.ServiceProvider.GetService<MainWindow>();
-                            mainWindow.MainPanel.Children.Add(gestiuneProdus);
-                            mainWindow.MainPanel.Children.Remove(this);
+                            var recordexist = Db.Produse.AsQueryable().Where(w => w.CodProdus == ScanHandler.ProdusScanat.CodProdus && w.Serie == ScanHandler.ProdusScanat.Serie).AsNoTracking().FirstOrDefault();
+                            if (recordexist == null)
+                            {
+                                MessageBox.Show("Selectati o categorie si apoi scanati din nou");
+                                BarcodeInput.Clear();
+                            }
+                            else
+                            {
+                                var gestiuneProdus = ServiceScope.ServiceProvider.GetService<GestiuneProdus>();
+                                if (gestiuneProdus != null)
+                                {
+                                    gestiuneProdus.ScanHandler = ScanHandler;
+                                    var mainWindow = ServiceScope.ServiceProvider.GetService<MainWindow>();
+                                    mainWindow.MainPanel.Children.Add(gestiuneProdus);
+                                    mainWindow.MainPanel.Children.Remove(this);
+                                }
+                            }
                         }
                     }
                     else
@@ -110,6 +136,12 @@ namespace GestiuneDepozit.Modules.Scan
                 }
                 BarcodeInput.Clear();
             }
+        }
+
+        private void CategorieLst_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            BarcodeInput.Focus();
+            BarcodeInput.SelectAll();
         }
     }
 }

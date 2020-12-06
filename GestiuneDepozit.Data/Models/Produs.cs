@@ -16,6 +16,6 @@ namespace GestiuneDepozit.Data.Models
         public string Saptamana { get; set; }
         public string An { get; set; }
         public Locatie Locatie { get; set; }
-        public StatusProdus Status { get; set; }
+        public Categorie Categorie { get; set; }
     }
 }
