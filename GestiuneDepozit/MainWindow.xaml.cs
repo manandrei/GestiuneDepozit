@@ -138,5 +138,19 @@ namespace GestiuneDepozit
             MainPanel.Children.Add(configModule);
             DisplayMenuModuleSelection = Visibility.Visible;
         }
+
+        private void MenuAbout_Click(object sender, RoutedEventArgs e)
+        {
+            if (ServiceScope == null)
+            {
+                ServiceScope = ServiceProvider.CreateScope();
+            }
+            var about = ServiceScope.ServiceProvider.GetService<AboutWindow>();
+            if (about!=null)
+            {
+                about.Owner = this;
+                about.ShowDialog();
+            }
+        }
     }
 }

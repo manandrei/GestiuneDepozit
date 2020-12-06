@@ -12,6 +12,9 @@
                 <MenuItem Name="MenuConfig" Header="Configurare" Click="MenuConfig_Click" Padding="6,6,6,6"/>
                 <MenuItem Name="MenuExit" Header="Inchide aplicatia" Click="MenuExit_Click" Padding="6,6,6,6"/>
             </MenuItem>
+            <MenuItem Header="Ajutor" Padding="6">
+                <MenuItem Name="MenuAbout" Header="Despre aplicatie" Padding="6" Click="MenuAbout_Click"/>
+            </MenuItem>
             <MenuItem Name="MenuListModules" Visibility="{Binding Path=DisplayMenuModuleSelection, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Header="Inapoi la lista cu module" Click="MenuListModules_Click" Background="#FF209B3C" Padding="6,6,6,6" Foreground="White">
             </MenuItem>
         </Menu>
