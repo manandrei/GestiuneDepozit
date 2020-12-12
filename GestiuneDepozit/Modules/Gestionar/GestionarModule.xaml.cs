@@ -289,7 +289,15 @@ namespace GestiuneDepozit.Modules.Gestionar
                         NumeStatus = StatusTxt.Text
                     };
                     Db.Status.Add(statusNou);
-                    Db.SaveChanges();
+                    try
+                    {
+                        Db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Eroare la salvarea datelor in baza de date!" + Environment.NewLine + ex.Message, "Eroare", MessageBoxButton.OK, MessageBoxImage.Stop);
+                        return;
+                    }
                     AfiseazaStatus();
                     StatusTxt.Clear();
                 }
@@ -357,7 +365,15 @@ namespace GestiuneDepozit.Modules.Gestionar
                         Db.Entry(categorieNoua.Status).State = EntityState.Unchanged;
 
                         Db.Categorii.Add(categorieNoua);
-                        Db.SaveChanges();
+                        try
+                        {
+                            Db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Eroare la salvarea datelor in baza de date!" + Environment.NewLine + ex.Message, "Eroare", MessageBoxButton.OK, MessageBoxImage.Stop);
+                            return;
+                        }
                         AfiseazaCategorie();
                         CategorieTxt.Clear();
                     }
@@ -368,7 +384,15 @@ namespace GestiuneDepozit.Modules.Gestionar
                         Db.Entry(categorie.Status).State = EntityState.Unchanged;
 
                         Db.Categorii.Update(categorie);
-                        Db.SaveChanges();
+                        try
+                        {
+                            Db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Eroare la salvarea datelor in baza de date!" + Environment.NewLine + ex.Message, "Eroare", MessageBoxButton.OK, MessageBoxImage.Stop);
+                            return;
+                        }
                         AfiseazaCategorie();
                         CategorieTxt.Clear();
                     }

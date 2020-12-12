@@ -5,9 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GestiuneDepozit.Modules.Config"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" FontSize="16">
     <DockPanel>
-        <GroupBox DockPanel.Dock="Top"  Header="Conexiune baza de date Miscrosoft SQL Server" VerticalAlignment="Top">
+        <GroupBox DockPanel.Dock="Top" VerticalAlignment="Top" Margin="20,20,20,20">
+            <GroupBox.Header>
+                <TextBlock Padding="5,5,5,5">
+                    <TextBlock.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" MappingMode="RelativeToBoundingBox" SpreadMethod="Pad">
+                            <GradientStop Color="#FFBF6D28" Offset="1"/>
+                            <GradientStop Color="#FFF1B07A"/>
+                        </LinearGradientBrush>
+                    </TextBlock.Background>Conexiune baza de date Miscrosoft SQL Server</TextBlock>
+            </GroupBox.Header>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -16,32 +25,32 @@
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
-                    <RowDefinition Name="MSSQL_PanelUserPass"></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
-                <StackPanel>
+                <StackPanel Margin="0,0,20,0">
                     <Label>Adresa server</Label>
                     <TextBox Name="MSSQL_Address"></TextBox>
                 </StackPanel>
-                <StackPanel Grid.Column="1">
+                <StackPanel Grid.Column="1" Margin="20,0,0,0">
                     <Label>Baza de date</Label>
                     <TextBox Name="MSSQL_Database"></TextBox>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
-                    <CheckBox Name="MSSQL_IsTrustedConnection" Checked="MSSQL_IsTrustedConnection_Checked">Conexiune de incredere (autentificare utilizator Active Directory)</CheckBox>
+                    <CheckBox Name="MSSQL_IsTrustedConnection" Unchecked="MSSQL_IsTrustedConnection_Unchecked" Checked="MSSQL_IsTrustedConnection_Checked" Margin="0,20,0,20">Conexiune de incredere (autentificare utilizator Active Directory)</CheckBox>
                 </StackPanel>
-                <StackPanel Grid.Column="0" Grid.Row="2">
+                <StackPanel x:Name="UserPanel" Grid.Column="0" Grid.Row="2" Margin="0,0,20,0">
                     <Label>Utilizator</Label>
                     <TextBox Name="MSSQL_Username"></TextBox>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Grid.Row="2">
+                <StackPanel x:Name="PasswordPanel" Grid.Column="1" Grid.Row="2" Margin="20,0,0,0">
                     <Label>Parola</Label>
                     <PasswordBox Name="MSSQL_Password"></PasswordBox>
                 </StackPanel>
             </Grid>
         </GroupBox>
-        <StackPanel DockPanel.Dock="Bottom" FlowDirection="LeftToRight" HorizontalAlignment="Center" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="10,10,10,10">
-            <Button Name="BtnSave" Margin="2,2,10,2" Click="BtnSave_Click" HorizontalAlignment="Stretch" Background="GreenYellow">Salveaza</Button>
-            <Button Name="BtnCancel" Margin="10,2,2,2" Background="Red" Click="BtnCancel_Click">Anuleaza</Button>
+        <StackPanel FlowDirection="LeftToRight" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Horizontal" Margin="10,10,10,10">
+            <Button Name="BtnSave" Margin="2,2,10,2" Click="BtnSave_Click" HorizontalAlignment="Stretch" Background="#FF339B0C" Padding="5,5,5,5" Foreground="White">Salveaza</Button>
+            <Button Name="BtnCancel" Margin="10,2,2,2" Background="#FFC54949" Click="BtnCancel_Click" Padding="5,5,5,5" Foreground="White">Anuleaza</Button>
         </StackPanel>
     </DockPanel>
 </UserControl>

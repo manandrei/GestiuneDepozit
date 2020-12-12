@@ -37,6 +37,7 @@ namespace GestiuneDepozit.Modules.Config
             Db = db;
 
             InitializeComponent();
+
             MSSQL_IsTrustedConnection.IsChecked = Configuration.Parameters.IsTrustedConnection;
             MSSQL_Address.Text = Configuration.Parameters.ServerAddress.Decrypt();
             MSSQL_Database.Text = Configuration.Parameters.Database.Decrypt();
@@ -48,30 +49,34 @@ namespace GestiuneDepozit.Modules.Config
         {
             if (MSSQL_Address.Text.Trim().Length > 3 && MSSQL_Database.Text.Trim().Length > 2)
             {
-                Parameters parameters = new Parameters
-                {
-                    IsTrustedConnection = (bool)MSSQL_IsTrustedConnection.IsChecked,
-                    ServerAddress = MSSQL_Address.Text.Encrypt(),
-                    Database = MSSQL_Database.Text.Encrypt(),
-                    Username = MSSQL_Username.Text.Encrypt(),
-                    Password = MSSQL_Password.Password.Encrypt()
-                };
-                Configuration.Parameters = parameters;
-                Configuration.WriteConfigFile();
+                Configuration.Parameters.FirstConfiguration = true;
+                Configuration.Parameters.IsTrustedConnection = (bool)MSSQL_IsTrustedConnection.IsChecked;
+                Configuration.Parameters.ServerAddress = MSSQL_Address.Text.Encrypt();
+                Configuration.Parameters.Database = MSSQL_Database.Text.Encrypt();
+                Configuration.Parameters.Username = MSSQL_Username.Text.Encrypt();
+                Configuration.Parameters.Password = MSSQL_Password.Password.Encrypt();
+
+                bool DbConnectionSuccesfully = false;
 
                 try
                 {
                     Db.Database.Migrate();
+                    DbConnectionSuccesfully = true;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Eroare creare/actualizare baza de date!" + Environment.NewLine + ex.Message, "Eroare conexiune baza de date!", MessageBoxButton.OK, MessageBoxImage.Stop);
                 }
 
-                ServiceScope?.Dispose();
-                ServiceScope = ServiceProvider.CreateScope();
-                var mainWindow = ServiceScope.ServiceProvider.GetService<MainWindow>();
-                mainWindow.LoadModuleSelection();
+                if (DbConnectionSuccesfully)
+                {
+                    Configuration.WriteConfigFile();
+
+                    ServiceScope?.Dispose();
+                    ServiceScope = ServiceProvider.CreateScope();
+                    var mainWindow = ServiceScope.ServiceProvider.GetService<MainWindow>();
+                    mainWindow.LoadModuleSelection();
+                }
             }
             else
             {
@@ -81,15 +86,36 @@ namespace GestiuneDepozit.Modules.Config
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-            ServiceScope?.Dispose();
-            ServiceScope = ServiceProvider.CreateScope();
-            var mainWindow = ServiceScope.ServiceProvider.GetService<MainWindow>();
-            mainWindow.LoadModuleSelection();
+            if (Configuration.Parameters.FirstConfiguration == true)
+            {
+                ServiceScope?.Dispose();
+                ServiceScope = ServiceProvider.CreateScope();
+                var mainWindow = ServiceScope.ServiceProvider.GetService<MainWindow>();
+                mainWindow.LoadModuleSelection();
+            }
+            else
+            {
+                MessageBox.Show("Aplicatia se va inchide deoarece nu a fost configurata conexiunea cu baza de date cu succes!", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                App.Current.Shutdown();
+            }            
         }
 
         private void MSSQL_IsTrustedConnection_Checked(object sender, RoutedEventArgs e)
         {
-            MSSQL_PanelUserPass.IsEnabled = !(bool)MSSQL_IsTrustedConnection.IsChecked;
+            if (MSSQL_IsTrustedConnection.IsChecked.HasValue)
+            {
+                UserPanel.IsEnabled = !MSSQL_IsTrustedConnection.IsChecked.Value;
+                PasswordPanel.IsEnabled = !MSSQL_IsTrustedConnection.IsChecked.Value;
+            }            
+        }
+
+        private void MSSQL_IsTrustedConnection_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (MSSQL_IsTrustedConnection.IsChecked.HasValue)
+            {
+                UserPanel.IsEnabled = !MSSQL_IsTrustedConnection.IsChecked.Value;
+                PasswordPanel.IsEnabled = !MSSQL_IsTrustedConnection.IsChecked.Value;
+            }
         }
     }
 }

@@ -37,6 +37,8 @@ namespace GestiuneDepozit
                     {
                         Parameters = new Parameters
                         {
+                            AcceptedEULA = false,
+                            FirstConfiguration = false,
                             ServerAddress = "localhost".Encrypt(),
                             Database = "GestiuneDepozit".Encrypt(),
                             IsTrustedConnection = true,

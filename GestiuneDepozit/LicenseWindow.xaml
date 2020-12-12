@@ -1,43 +1,20 @@
-﻿<Window x:Class="GestiuneDepozit.AboutWindow"
+﻿<Window x:Class="GestiuneDepozit.LicenseWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GestiuneDepozit"
         mc:Ignorable="d"
-        Title="Despre aplicatie" Height="583" Width="833" FontSize="18" WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize" WindowStyle="ThreeDBorderWindow" Padding="10,10,10,10">
-    <Grid>
-        <RichTextBox VerticalAlignment="Top" Margin="10,10,10,0">
-            <RichTextBox.Resources>
-                <Style TargetType="Hyperlink">
-                    <Setter Property="Cursor" Value="Hand" />
-                    <EventSetter Event="RequestNavigate" Handler="Hyperlink_RequestNavigate" />
-                </Style>
-            </RichTextBox.Resources>
-            <FlowDocument>
-                <Paragraph FontWeight="Bold" FontSize="22" Padding="0,0,0,0">GestiuneDepozit</Paragraph>
-                <Paragraph>Aplicatie dezvoltata de:
-                    <Bold>Man Andrei Catalin</Bold>
-                    <LineBreak/>
-                    Email:
-                    <Hyperlink NavigateUri="mailto:man.andrei.catalin@outlook.com" FontWeight="Bold" Foreground="#FF006FBB">man.andrei.catalin@outlook.com</Hyperlink>
-                    <LineBreak/>
-                    Telefon:
-                    <Hyperlink NavigateUri="tel:+4 0750 456 773" FontWeight="Bold" Foreground="#FF006FBB">+4 0750 456 773</Hyperlink>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
-        <Border Margin="10,160,10,54" BorderThickness="3" Padding="5">
-            <Border.BorderBrush>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF0B418F"/>
-                    <GradientStop Color="#FF2AAADA" Offset="1"/>
-                </LinearGradientBrush>
-            </Border.BorderBrush>
-            <DockPanel>
-                <Label DockPanel.Dock="Top" HorizontalAlignment="Left" VerticalAlignment="Top">Software distribuit sub licenta:</Label>
-                <ScrollViewer >
-                    <TextBox IsReadOnly="True" xml:space="preserve" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="True" FontSize="14">GestiuneDepozit
+        Title="Aceeptare licenta GestiuneDepozit" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" FontSize="16" Closing="Window_Closing">
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Bottom" Margin="20,20,20,20" HorizontalAlignment="Center">
+            <CheckBox x:Name="CkTerms" Margin="0,0,0,20" VerticalContentAlignment="Center">
+                <TextBlock Text="Sunt de acord cu termenii si conditiile"/>                
+            </CheckBox>
+            <Button Click="btnOk_Click" Width="85" IsEnabled="{Binding IsChecked, ElementName=CkTerms}">OK</Button>
+        </StackPanel>
+        <ScrollViewer HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="20,20,20,20" >
+            <TextBox IsReadOnly="True" xml:space="preserve" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="True" FontSize="16">GestiuneDepozit
 Copyright (c) 2020 Man Andrei Catalin
 EMAIL: MAN.ANDREI.CATALIN@OUTLOOK.COM
 TELEFON: 0750456773
@@ -128,9 +105,6 @@ Microsoft.Extensions.DependencyInjection : https://github.com/dotnet/runtime/blo
 System.Text.Json : https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 .NET 5 : https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     </TextBox>
-                </ScrollViewer>
-            </DockPanel>
-        </Border>
-        <Button x:Name="OKBtn" Click="OKBtn_Click" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="5,5,5,5" Margin="5,5,5,10">OK</Button>
-    </Grid>
+        </ScrollViewer>
+    </DockPanel>
 </Window>

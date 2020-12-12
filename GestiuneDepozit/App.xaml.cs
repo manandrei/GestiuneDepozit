@@ -54,12 +54,21 @@ namespace GestiuneDepozit
             services.AddTransient<ScanHandler>();
             services.AddTransient<GestiuneProdus>();
             services.AddTransient<GasesteProdus>();
+            services.AddTransient<LicenseWindow>();
         }
 
         private void AppOnStartup(object sender, StartupEventArgs e)
         {
-            var mainWindow = _serviceProvider.GetService<MainWindow>();
-            mainWindow?.Show();
+            if (Configuration.Parameters.AcceptedEULA)
+            {
+                var mainWindow = _serviceProvider.GetService<MainWindow>();
+                mainWindow?.Show();
+            }
+            else
+            {
+                var licenseWindow = _serviceProvider.GetService<LicenseWindow>();
+                licenseWindow?.Show();
+            }
         }
     }
 }
