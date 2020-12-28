@@ -60,7 +60,11 @@ namespace GestiuneDepozit.Modules.Config
 
                 try
                 {
-                    Db.Database.Migrate();
+                    if (Db.Database.GetPendingMigrations().Count() > 0)
+                    {
+                        Db.Database.Migrate();
+                    }
+
                     DbConnectionSuccesfully = true;
                 }
                 catch (Exception ex)
@@ -97,7 +101,7 @@ namespace GestiuneDepozit.Modules.Config
             {
                 MessageBox.Show("Aplicatia se va inchide deoarece nu a fost configurata conexiunea cu baza de date cu succes!", "", MessageBoxButton.OK, MessageBoxImage.Information);
                 App.Current.Shutdown();
-            }            
+            }
         }
 
         private void MSSQL_IsTrustedConnection_Checked(object sender, RoutedEventArgs e)
@@ -106,7 +110,7 @@ namespace GestiuneDepozit.Modules.Config
             {
                 UserPanel.IsEnabled = !MSSQL_IsTrustedConnection.IsChecked.Value;
                 PasswordPanel.IsEnabled = !MSSQL_IsTrustedConnection.IsChecked.Value;
-            }            
+            }
         }
 
         private void MSSQL_IsTrustedConnection_Unchecked(object sender, RoutedEventArgs e)
