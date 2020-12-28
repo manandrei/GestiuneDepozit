@@ -265,10 +265,16 @@ namespace GestiuneDepozit.Modules.Gestionar
         {
             var categorii = Db.Categorii
                 .AsQueryable()
-                .Include(i=> i.Status)
+                .Include(i => i.Status)
                 .OrderBy(o => o.NumeCategorie)
                 .AsNoTracking()
-                .ToList();
+                .ToList()
+                .Select(s => new CategorieCuNumeStatus
+                {
+                    Id = s.Id,
+                    NumeCategorie = s.NumeCategorie,
+                    NumeStatus = s.Status.NumeStatus
+                });
             CategorieGrid.ItemsSource = null;
             CategorieGrid.ItemsSource = categorii;
         }
@@ -353,7 +359,7 @@ namespace GestiuneDepozit.Modules.Gestionar
                 var status = Db.Status.AsQueryable().Where(w => w.NumeStatus == selectedStatus.NumeStatus && w.Id == selectedStatus.Id).AsNoTracking().FirstOrDefault();
                 if (status != null)
                 {
-                    var categorie = Db.Categorii.Include(i=>i.Status).Where(w => w.NumeCategorie == CategorieTxt.Text).FirstOrDefault();
+                    var categorie = Db.Categorii.Include(i => i.Status).Where(w => w.NumeCategorie == CategorieTxt.Text).FirstOrDefault();
                     if (categorie == null)
                     {
                         var categorieNoua = new Categorie
@@ -400,13 +406,13 @@ namespace GestiuneDepozit.Modules.Gestionar
                     {
                         MessageBox.Show($"Categoria este definita deja in sistem!", "", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     }
-                }                
+                }
             }
         }
 
         private void CategorieGrid_Buton_Click(object sender, MouseButtonEventArgs e)
         {
-            var categorieGrid = ((Button)sender).Tag as Categorie;
+            var categorieGrid = ((Button)sender).Tag as CategorieCuNumeStatus;
             var categorie = Db.Categorii.Where(w => w.Id == categorieGrid.Id).FirstOrDefault();
             if (categorie != null)
             {
