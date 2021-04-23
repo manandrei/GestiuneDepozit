@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace GestiuneDepozit.Data.Models
@@ -10,5 +11,6 @@ namespace GestiuneDepozit.Data.Models
     {
         public int Id { get; set; }
         public string NumeStatus { get; set; }
+        public List<Categorie> Categorii { get; set; }
     }
 }

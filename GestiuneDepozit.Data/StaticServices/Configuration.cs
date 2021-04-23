@@ -11,25 +11,22 @@ namespace GestiuneDepozit
         public static bool ConfigFileLoaded { get; set; } = false;
         public static Parameters Parameters { get; set; }
 
-        public static string MSSQL_ConnectionString()
-        {
-            if (ConfigFileLoaded)
-            {
-                return $"Server={ Configuration.Parameters.ServerAddress.Decrypt() };Database={ Configuration.Parameters.Database.Decrypt() };{ (Configuration.Parameters.IsTrustedConnection ? "Trusted_Connection=True;" : $"User Id={Configuration.Parameters.Username.Decrypt()};Password={Configuration.Parameters.Password.Decrypt()};") }";
-            }
-            return "";
-        }
-
         static Configuration()
         {
             string applocation = Path.GetDirectoryName(typeof(Configuration).Assembly.Location);
             ConfigFilename = Path.Combine(applocation, "configuration.json");
 
+            var dbDirectory = Path.Combine(applocation, "DbSqlite");
+            if (!Directory.Exists(dbDirectory))
+            {
+                Directory.CreateDirectory(dbDirectory);
+            }
+
             if (Directory.Exists(applocation))
             {
                 if (File.Exists(ConfigFilename))
                 {
-                    ReadConfigFile();                    
+                    ReadConfigFile();
                 }
                 else
                 {
@@ -38,7 +35,8 @@ namespace GestiuneDepozit
                         Parameters = new Parameters
                         {
                             AcceptedEULA = false,
-                            FirstConfiguration = false,
+                            FirstConfiguration = true,
+                            DatabaseServerType = ServerTypes.Sqlite,
                             ServerAddress = "localhost".Encrypt(),
                             Database = "GestiuneDepozit".Encrypt(),
                             IsTrustedConnection = true,
@@ -86,7 +84,33 @@ namespace GestiuneDepozit
             else
             {
                 ConfigFileLoaded = true;
-            }            
+            }
         }
+
+        public static string MSSQL_ConnectionString()
+        {
+            if (ConfigFileLoaded)
+            {
+                return $"Server={ Configuration.Parameters.ServerAddress.Decrypt() };Database={ Configuration.Parameters.Database.Decrypt() };{ (Configuration.Parameters.IsTrustedConnection ? "Trusted_Connection=True;" : $"User Id={Configuration.Parameters.Username.Decrypt()};Password={Configuration.Parameters.Password.Decrypt()};") }";
+            }
+            return "";
+        }
+
+        public static string Sqlite_ConnectionString()
+        {
+            if (ConfigFileLoaded)
+            {
+                string applocation = Path.GetDirectoryName(typeof(Configuration).Assembly.Location);
+                var dbDirectory = Path.Combine(applocation, "DbSqlite");
+                if (!Directory.Exists(dbDirectory))
+                {
+                    Directory.CreateDirectory(dbDirectory);
+                }
+                var dbfile = Path.Combine(dbDirectory, $"{ Parameters.Database.Decrypt() }.db");
+                return $"Data Source={ dbfile }";
+            }
+            return "";
+        }
+
     }
 }

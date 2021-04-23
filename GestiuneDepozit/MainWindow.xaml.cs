@@ -66,7 +66,7 @@ namespace GestiuneDepozit
 
             InitializeComponent();
 
-            if (!Configuration.Parameters.FirstConfiguration)
+            if (Configuration.Parameters.FirstConfiguration)
             {
                 LoadConfigModule();
             }

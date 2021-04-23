@@ -12,7 +12,25 @@ namespace GestiuneDepozit.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(Configuration.MSSQL_ConnectionString());
+            //var provider = Configuration.Parameters.DatabaseServerType;
+
+            //switch (provider)
+            //{
+            //    case ServerTypes.Sqlite:
+            //        optionsBuilder.UseSqlite(Configuration.Sqlite_ConnectionString(), x => x.MigrationsAssembly("GestiuneDepozit.SqliteMigrations"));
+            //        break;
+            //    case ServerTypes.SqlServer:
+            //        optionsBuilder.UseSqlServer(Configuration.MSSQL_ConnectionString(), x => x.MigrationsAssembly("GestiuneDepozit.SqlServerMigrations"));
+            //        break;
+            //    default:
+            //        break;
+            //}
+
+
+            //optionsBuilder.UseSqlServer(Configuration.MSSQL_ConnectionString());
+
+            //optionsBuilder.UseSqlite(Configuration.Sqlite_ConnectionString());
+
             optionsBuilder.EnableSensitiveDataLogging();
         }
 

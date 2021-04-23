@@ -24,4 +24,8 @@
     <ProjectReference Include="..\GestiuneDepozit.Helpers\GestiuneDepozit.Helpers.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

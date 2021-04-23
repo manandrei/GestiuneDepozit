@@ -245,9 +245,10 @@ namespace GestiuneDepozit.Modules.Gestionar
 
         private void AfiseazaStatus()
         {
-            var status = Db.Status.AsQueryable()
-                .OrderBy(o => o.NumeStatus)
+            var status = Db.Status
                 .AsNoTracking()
+                .AsQueryable()
+                .OrderBy(o => o.NumeStatus)
                 .ToList();
             StatusGrid.ItemsSource = null;
             StatusGrid.ItemsSource = status;
@@ -264,10 +265,10 @@ namespace GestiuneDepozit.Modules.Gestionar
         private void AfiseazaCategorie()
         {
             var categorii = Db.Categorii
+                .AsNoTracking()
                 .AsQueryable()
                 .Include(i => i.Status)
                 .OrderBy(o => o.NumeCategorie)
-                .AsNoTracking()
                 .ToList()
                 .Select(s => new CategorieCuNumeStatus
                 {
@@ -287,7 +288,11 @@ namespace GestiuneDepozit.Modules.Gestionar
             }
             else
             {
-                var status = Db.Status.Where(w => w.NumeStatus == StatusTxt.Text).FirstOrDefault();
+                var status = Db.Status
+                    .AsNoTracking()
+                    .Where(w => w.NumeStatus == StatusTxt.Text)
+                    .FirstOrDefault();
+
                 if (status == null)
                 {
                     var statusNou = new Status
@@ -317,7 +322,10 @@ namespace GestiuneDepozit.Modules.Gestionar
         private void StatusGrid_Buton_Click(object sender, MouseButtonEventArgs e)
         {
             var statusGrid = ((Button)sender).Tag as Status;
-            var status = Db.Status.Where(w => w.Id == statusGrid.Id).FirstOrDefault();
+            var status = Db.Status
+                .Include(i=>i.Categorii)
+                .Where(w => w.Id == statusGrid.Id)
+                .FirstOrDefault();
             if (status != null)
             {
                 var numarProduseStatus = Db.Produse.Where(w => w.Categorie.Status.Id == status.Id).Count();
@@ -331,6 +339,10 @@ namespace GestiuneDepozit.Modules.Gestionar
                 {
                     if (MessageBox.Show($"Stergeti statusul cu numele {status.NumeStatus} si Id {status.Id}?", "Confirmare", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     {
+                        if (status.Categorii.Count > 0)
+                        {
+                            Db.Categorii.RemoveRange(status.Categorii);
+                        }
                         Db.Status.Remove(status);
                         try
                         {
@@ -347,6 +359,7 @@ namespace GestiuneDepozit.Modules.Gestionar
             }
         }
 
+        //ToDo: Fix adding category as the status is a tracked object
         private void AdaugaCategorieBtn_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(CategorieTxt.Text) || StatusCbx.SelectedItem == null || StatusCbx.SelectedItem is not Status)
@@ -356,7 +369,11 @@ namespace GestiuneDepozit.Modules.Gestionar
             else
             {
                 var selectedStatus = StatusCbx.SelectedItem as Status;
-                var status = Db.Status.AsQueryable().Where(w => w.NumeStatus == selectedStatus.NumeStatus && w.Id == selectedStatus.Id).AsNoTracking().FirstOrDefault();
+                var status = Db.Status
+                    .AsQueryable()
+                    .Include(i=>i.Categorii)
+                    .Where(w => w.NumeStatus == selectedStatus.NumeStatus && w.Id == selectedStatus.Id)
+                    .FirstOrDefault();
                 if (status != null)
                 {
                     var categorie = Db.Categorii.Include(i => i.Status).Where(w => w.NumeCategorie == CategorieTxt.Text).FirstOrDefault();
@@ -368,16 +385,17 @@ namespace GestiuneDepozit.Modules.Gestionar
                             Status = status
                         };
 
-                        Db.Entry(categorieNoua.Status).State = EntityState.Unchanged;
+                        status.Categorii.Add(categorieNoua);
+                        //Db.Entry(categorieNoua.Status).State = EntityState.Detached;
 
-                        Db.Categorii.Add(categorieNoua);
+                        Db.Status.Update(status);
                         try
                         {
                             Db.SaveChanges();
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("Eroare la salvarea datelor in baza de date!" + Environment.NewLine + ex.Message, "Eroare", MessageBoxButton.OK, MessageBoxImage.Stop);
+                            MessageBox.Show("Eroare la salvarea datelor in baza de date!" + Environment.NewLine + ex.Message + Environment.NewLine + ex.InnerException.Message, "Eroare", MessageBoxButton.OK, MessageBoxImage.Stop);
                             return;
                         }
                         AfiseazaCategorie();
@@ -387,7 +405,7 @@ namespace GestiuneDepozit.Modules.Gestionar
                     {
                         categorie.Status = status;
 
-                        Db.Entry(categorie.Status).State = EntityState.Unchanged;
+                        //Db.Entry(categorie.Status).State = EntityState.Detached;
 
                         Db.Categorii.Update(categorie);
                         try
