@@ -20,7 +20,7 @@ namespace GestiuneDepozit.Services
 
         private bool BarcodeValidation()
         {
-            if (string.IsNullOrEmpty(ScannedValue))
+            if (string.IsNullOrWhiteSpace(ScannedValue))
             {
                 return false;
             }

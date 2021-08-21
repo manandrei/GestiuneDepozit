@@ -88,7 +88,7 @@ namespace GestiuneDepozit.Modules.Config
 
                 if (InitialDbType != Configuration.Parameters.DatabaseServerType)
                 {
-                    MessageBox.Show("Conexiunea aplicatie s-a modificat iar aplicatia se va restarta acum pentru aplicarea noilor parametri!", "Restart", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Conexiunea aplicatiei s-a modificat iar aplicatia se va restarta acum pentru aplicarea noilor parametri!" + Environment.NewLine + "Repornirea aplicatiei poate dura putin timp (5-10 secunde)!", "Restart", MessageBoxButton.OK, MessageBoxImage.Warning);
                     App.RestartApplication();
                 }
                 else

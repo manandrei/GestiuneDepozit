@@ -116,7 +116,7 @@ namespace GestiuneDepozit.Modules.Gestionar
         private void AdaugaLocatieBtn_Click(object sender, RoutedEventArgs e)
         {
             int capacitate;
-            if (string.IsNullOrEmpty(NumeLocatieTxt.Text) || string.IsNullOrEmpty(CapacitateNum.Text) || int.TryParse(CapacitateNum.Text, out capacitate) == false)
+            if (string.IsNullOrWhiteSpace(NumeLocatieTxt.Text) || string.IsNullOrWhiteSpace(CapacitateNum.Text) || int.TryParse(CapacitateNum.Text, out capacitate) == false)
             {
                 MessageBox.Show("Verificati daca campurile sunt completate corespunzator!");
             }
@@ -282,7 +282,7 @@ namespace GestiuneDepozit.Modules.Gestionar
 
         private void AdaugaStatusBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(StatusTxt.Text))
+            if (string.IsNullOrWhiteSpace(StatusTxt.Text))
             {
                 MessageBox.Show("Verificati daca campurile sunt completate corespunzator!");
             }
@@ -362,7 +362,7 @@ namespace GestiuneDepozit.Modules.Gestionar
         //ToDo: Fix adding category as the status is a tracked object
         private void AdaugaCategorieBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(CategorieTxt.Text) || StatusCbx.SelectedItem == null || StatusCbx.SelectedItem is not Status)
+            if (string.IsNullOrWhiteSpace(CategorieTxt.Text) || StatusCbx.SelectedItem == null || StatusCbx.SelectedItem is not Status)
             {
                 MessageBox.Show("Verificati daca campurile sunt completate corespunzator!");
             }

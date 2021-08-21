@@ -41,20 +41,27 @@ namespace GestiuneDepozit.Modules.Scan
         {
             SearchValueLbl.Text = ProductCodePartial;
 
-            if (!string.IsNullOrEmpty(ProductCodePartial))
+            if (!string.IsNullOrWhiteSpace(ProductCodePartial))
             {
-                var produse = Db.Produse.Include(i => i.Locatie).Include(i => i.Categorie).ThenInclude(c=>c.Status).Where(w => w.CodProdus.EndsWith(ProductCodePartial)).OrderBy(o => o.DataInregistrare).Select(s => new
-                {
-                    s.Id,
-                    s.DataInregistrare,
-                    s.InregistratDe,
-                    s.CodProdus,
-                    s.Serie,
-                    s.Saptamana,
-                    s.An,
-                    s.Locatie.NumeLocatie,
-                    s.Categorie.Status.NumeStatus
-                }).ToList();
+                var produse = Db.Produse
+                    .Include(i => i.Locatie)
+                    .Include(i => i.Categorie)
+                    .ThenInclude(c => c.Status)
+                    .Where(w => w.CodProdus.Contains(ProductCodePartial))
+                    .OrderBy(o => o.DataInregistrare)
+                    .Select(s => new
+                    {
+                        s.Id,
+                        s.DataInregistrare,
+                        s.InregistratDe,
+                        s.CodProdus,
+                        s.Serie,
+                        s.Saptamana,
+                        s.An,
+                        s.Locatie.NumeLocatie,
+                        s.Categorie.Status.NumeStatus
+                    })
+                    .ToList();
 
                 RezultatGrid.ItemsSource = produse;
             }

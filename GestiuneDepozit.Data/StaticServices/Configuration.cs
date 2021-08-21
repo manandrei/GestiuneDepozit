@@ -77,7 +77,7 @@ namespace GestiuneDepozit
             string jsonString = File.ReadAllText(ConfigFilename);
             Parameters = JsonSerializer.Deserialize<Parameters>(jsonString);
             ConfigFileLoaded = true;
-            if (string.IsNullOrEmpty(MSSQL_ConnectionString()))
+            if (string.IsNullOrWhiteSpace(MSSQL_ConnectionString()))
             {
                 ConfigFileLoaded = false;
             }
