@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestiuneDepozit", "GestiuneDepozit\GestiuneDepozit.csproj", "{86072EDD-B95C-42AB-AE69-C06FA9030DBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestiuneDepozit", "GestiuneDepozit\GestiuneDepozit.csproj", "{86072EDD-B95C-42AB-AE69-C06FA9030DBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestiuneDepozit.Data", "GestiuneDepozit.Data\GestiuneDepozit.Data.csproj", "{95BBE4AF-AF70-4E8C-8981-6F8677A56EDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestiuneDepozit.Data", "GestiuneDepozit.Data\GestiuneDepozit.Data.csproj", "{95BBE4AF-AF70-4E8C-8981-6F8677A56EDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestiuneDepozit.Helpers", "GestiuneDepozit.Helpers\GestiuneDepozit.Helpers.csproj", "{4810002B-6FA6-42D6-9983-B5810D65E89B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestiuneDepozit.Helpers", "GestiuneDepozit.Helpers\GestiuneDepozit.Helpers.csproj", "{4810002B-6FA6-42D6-9983-B5810D65E89B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
