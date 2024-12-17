@@ -58,6 +58,8 @@ namespace GestiuneDepozit.Modules.Gestionar
                 {
                     var worksheet = workbook.Worksheets.Add($"Stoc {DateTime.Now.Date.ToString("dd.MM.yyyy")}");
                     var stoc = Db.Produse
+                        .AsNoTracking()
+                        .AsSplitQuery()
                         .Include(i => i.Locatie)
                         .Include(i => i.Categorie)
                         .ThenInclude(c => c.Status)
@@ -81,7 +83,16 @@ namespace GestiuneDepozit.Modules.Gestionar
                     worksheet.Cell(1, 6).Value = "Categoria";
                     worksheet.Cell(1, 7).Value = "Status";
 
-                    worksheet.Cell(2, 1).Value = stoc.AsEnumerable();
+                    for (int i = 0; i < stoc.Count; i++)
+                    {
+                        worksheet.Cell(i + 2, 1).Value = stoc[i].Produs;
+                        worksheet.Cell(i + 2, 2).Value = stoc[i].Seria;
+                        worksheet.Cell(i + 2, 3).Value = stoc[i].Saptamana;
+                        worksheet.Cell(i + 2, 4).Value = stoc[i].An;
+                        worksheet.Cell(i + 2, 5).Value = stoc[i].Locatia;
+                        worksheet.Cell(i + 2, 6).Value = stoc[i].Categoria;
+                        worksheet.Cell(i + 2, 7).Value = stoc[i].Status;
+                    }
 
                     workbook.SaveAs(saveFileDialog.FileName);
                 }
