@@ -91,7 +91,7 @@ namespace GestiuneDepozit
         {
             if (ConfigFileLoaded)
             {
-                return $"Server={ Configuration.Parameters.ServerAddress.Decrypt() };Database={ Configuration.Parameters.Database.Decrypt() };{ (Configuration.Parameters.IsTrustedConnection ? "Trusted_Connection=True;" : $"User Id={Configuration.Parameters.Username.Decrypt()};Password={Configuration.Parameters.Password.Decrypt()};") }";
+                return $"Server={ Configuration.Parameters.ServerAddress.Decrypt() };Database={ Configuration.Parameters.Database.Decrypt() };{ (Configuration.Parameters.IsTrustedConnection ? "Trusted_Connection=True;" : $"User Id={Configuration.Parameters.Username.Decrypt()};Password={Configuration.Parameters.Password.Decrypt()};") };TrustServerCertificate=True";
             }
             return "";
         }
